@@ -86,3 +86,26 @@ p {
     font-weight: bold;
     color: #333;
 }
+
+#countdownTimer {
+    font-size: 20px;
+    font-weight: bold;
+    color: #ff0000;
+    background: black;
+    padding: 8px 15px;
+    border-radius: 10px;
+    display: inline-block;
+    margin-top: 10px;
+    transition: transform 0.2s ease-in-out;
+}
+
+/* Animate timer ticking */
+@keyframes tick {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+    100% { transform: scale(1); }
+}
+#countdownTimer.ticking {
+    animation: tick 1s infinite;
+}
+
