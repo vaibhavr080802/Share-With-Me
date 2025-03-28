@@ -1,17 +1,17 @@
-/* Background Gradient */
+/* Background with a cool blue gradient */
 body {
     font-family: 'Poppins', sans-serif;
     text-align: center;
-    background: linear-gradient(135deg, #ff9a9e, #fad0c4, #ffdde1);
+    background: linear-gradient(135deg, #007bff, #00d4ff, #00ffa3);
     margin: 0;
     padding: 20px;
-    animation: gradientShift 8s infinite linear alternate;
+    animation: gradientShift 8s infinite alternate;
 }
 
 /* Animated Background */
 @keyframes gradientShift {
-    0% { background: linear-gradient(135deg, #ff9a9e, #fad0c4, #ffdde1); }
-    100% { background: linear-gradient(135deg, #a18cd1, #fbc2eb, #fad0c4); }
+    0% { background: linear-gradient(135deg, #007bff, #00d4ff, #00ffa3); }
+    100% { background: linear-gradient(135deg, #0056b3, #00a3e0, #00cc66); }
 }
 
 /* Main Container */
@@ -32,7 +32,7 @@ body {
 
 /* Headings */
 h2 {
-    color: #ff4081;
+    color: #0056b3;
     font-size: 24px;
 }
 
@@ -41,7 +41,7 @@ input {
     width: 80%;
     padding: 10px;
     margin: 10px 0;
-    border: 2px solid #ff4081;
+    border: 2px solid #007bff;
     border-radius: 8px;
     outline: none;
     transition: 0.3s;
@@ -49,13 +49,13 @@ input {
 
 /* Input Hover Effect */
 input:focus {
-    border-color: #6200ea;
-    box-shadow: 0 0 8px rgba(98, 0, 234, 0.5);
+    border-color: #00cc66;
+    box-shadow: 0 0 8px rgba(0, 204, 102, 0.5);
 }
 
 /* Buttons */
 button {
-    background: linear-gradient(45deg, #ff4081, #ff6f61);
+    background: linear-gradient(45deg, #007bff, #00a3e0);
     color: white;
     border: none;
     padding: 12px 18px;
@@ -67,7 +67,7 @@ button {
 
 /* Button Hover Effect */
 button:hover {
-    background: linear-gradient(45deg, #6200ea, #03a9f4);
+    background: linear-gradient(45deg, #00cc66, #009688);
     transform: scale(1.1);
 }
 

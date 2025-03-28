@@ -1,70 +1,70 @@
-// Function to upload a file
-function uploadFile() {
-    let fileInput = document.getElementById("fileInput");
-    let uploadMessage = document.getElementById("uploadMessage");
+const uploadInput = document.getElementById("fileInput");
+const uploadBtn = document.getElementById("uploadBtn");
+const keyDisplay = document.getElementById("generatedKey");
+const countdownTimer = document.getElementById("countdownTimer");
+const downloadInput = document.getElementById("downloadKey");
+const downloadBtn = document.getElementById("downloadBtn");
 
-    if (fileInput.files.length === 0) {
-        uploadMessage.innerText = "Please select a file to upload!";
-        return;
-    }
+let fileStorage = {}; // Stores files temporarily in memory
+let timerInterval = null;
 
-    let file = fileInput.files[0];
-    let reader = new FileReader();
-
-    reader.onload = function(event) {
-        let fileData = event.target.result;
-        let key = generateKey(); // Generate unique key
-        let expiryTime = Date.now() + 24 * 60 * 60 * 1000; // Expires in 24 hours
-
-        let fileObject = {
-            fileName: file.name,
-            fileData: fileData,
-            expiry: expiryTime
-        };
-
-        localStorage.setItem(key, JSON.stringify(fileObject)); // Store in localStorage
-
-        uploadMessage.innerHTML = `File uploaded successfully!<br> Your Key: <b>${key}</b><br> (Valid for 24 hours)`;
-    };
-
-    reader.readAsDataURL(file);
-}
-
-// Function to generate a unique key
+// Generate a Unique Key (6-digit)
 function generateKey() {
-    return Math.random().toString(36).substr(2, 8); // Random 8-character key
+    return Math.random().toString(36).substr(2, 6).toUpperCase();
 }
 
-// Function to download a file
-function downloadFile() {
-    let keyInput = document.getElementById("keyInput").value.trim();
-    let downloadMessage = document.getElementById("downloadMessage");
-
-    if (!keyInput) {
-        downloadMessage.innerText = "Please enter a valid key!";
-        return;
+// Start Countdown Timer
+function startCountdown(expirationTime) {
+    clearInterval(timerInterval);
+    function updateTimer() {
+        const now = new Date().getTime();
+        const timeLeft = expirationTime - now;
+        if (timeLeft <= 0) {
+            clearInterval(timerInterval);
+            keyDisplay.innerHTML = "EXPIRED";
+            countdownTimer.innerHTML = "00:00";
+            return;
+        }
+        const hours = String(Math.floor(timeLeft / (1000 * 60 * 60))).padStart(2, '0');
+        const minutes = String(Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60))).padStart(2, '0');
+        const seconds = String(Math.floor((timeLeft % (1000 * 60)) / 1000)).padStart(2, '0');
+        countdownTimer.innerHTML = `${hours}:${minutes}:${seconds}`;
     }
-
-    let fileObject = JSON.parse(localStorage.getItem(keyInput));
-
-    if (!fileObject) {
-        downloadMessage.innerText = "Invalid key! File not found.";
-        return;
-    }
-
-    if (Date.now() > fileObject.expiry) {
-        downloadMessage.innerText = "This key has expired. File is deleted!";
-        localStorage.removeItem(keyInput); // Delete expired file
-        return;
-    }
-
-    // Create a link and trigger the download
-    let downloadLink = document.createElement("a");
-    downloadLink.href = fileObject.fileData;
-    downloadLink.download = fileObject.fileName;
-    document.body.appendChild(downloadLink);
-    downloadLink.click();
-    document.body.removeChild(downloadLink);
-
-    downloadMessage.innerText = "File downloaded successfully!";
+    updateTimer();
+    timerInterval = setInterval(updateTimer, 1000);
 }
+
+// Handle File Upload
+uploadBtn.addEventListener("click", () => {
+    const file = uploadInput.files[0];
+    if (!file) {
+        alert("Please select a file to upload.");
+        return;
+    }
+    const key = generateKey();
+    const expirationTime = new Date().getTime() + 24 * 60 * 60 * 1000; // 24 hours from now
+    fileStorage[key] = { file, expirationTime };
+
+    keyDisplay.innerHTML = `Your Key: <b>${key}</b>`;
+    startCountdown(expirationTime);
+});
+
+// Handle File Download
+downloadBtn.addEventListener("click", () => {
+    const key = downloadInput.value.trim().toUpperCase();
+    if (!fileStorage[key]) {
+        alert("Invalid or expired key.");
+        return;
+    }
+    const { file, expirationTime } = fileStorage[key];
+    if (new Date().getTime() > expirationTime) {
+        alert("Key has expired!");
+        return;
+    }
+    const link = document.createElement("a");
+    link.href = URL.createObjectURL(file);
+    link.download = file.name;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+});
