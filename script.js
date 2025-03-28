@@ -1,9 +1,9 @@
 const uploadInput = document.getElementById("fileInput");
-const uploadBtn = document.getElementById("uploadBtn");
+const uploadBtn = document.getElementById("uploadBtn"); // Fixed: Added correct ID
 const keyDisplay = document.getElementById("generatedKey");
 const countdownTimer = document.getElementById("countdownTimer");
-const downloadInput = document.getElementById("downloadKey");
-const downloadBtn = document.getElementById("downloadBtn");
+const downloadInput = document.getElementById("downloadKey"); // Fixed: Corrected ID reference
+const downloadBtn = document.getElementById("downloadBtn"); // Fixed: Added correct ID
 
 let fileStorage = {}; // Stores files temporarily in memory
 let timerInterval = null;

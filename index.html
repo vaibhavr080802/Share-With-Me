@@ -13,14 +13,16 @@
         <!-- Upload Section -->
         <div class="upload-section">
             <input type="file" id="fileInput">
-            <button onclick="uploadFile()">Upload File</button>
+            <button id="uploadBtn">Upload File</button>
             <p id="uploadMessage"></p>
+            <p id="generatedKey"></p>
+            <p id="countdownTimer"></p>
         </div>
 
         <!-- Download Section -->
         <div class="download-section">
-            <input type="text" id="keyInput" placeholder="Enter key to download file">
-            <button onclick="downloadFile()">Download File</button>
+            <input type="text" id="downloadKey" placeholder="Enter key to download file">
+            <button id="downloadBtn">Download File</button>
             <p id="downloadMessage"></p>
         </div>
     </div>
